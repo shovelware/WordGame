@@ -300,15 +300,22 @@ def save_score(name, score):
 def get_top_ten():
     #this line is mad but I think I get it
     scorelist = sorted(load_scores(), key = lambda item: item[1], reverse = True)
-
-    #skim the top ten
+    
+    #set up to skim the top ten
     topscorelist = []
     count = 0
-    while count < 10:
-        topscorelist.append(scorelist[count])
-        count += 1
+    top = 10
+
+    #make sure there is a top ten
+    if len(scorelist) < top:
+    	top = len(scorelist)
+
+    #actual skimming
+    while count < top:
+    	topscorelist.append(scorelist[count])
+    	count += 1
     return topscorelist
-    
+
 """loads all scores into a list for sorting"""
 def load_scores():
     scorelist = []
