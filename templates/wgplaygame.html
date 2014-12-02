@@ -1,19 +1,21 @@
-{% extends "base.html" %}
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body>{% extends "base.html" %}
 
 {% block the_body %}
 
 <div>
 <sourceword>"{{ source_word }}"</sourceword>
 <hr>
-	<form action={{ submit_url }} method="POST">
+	<form action="{{" submit_url="" }}="" method="POST">
 	SUBMIT YOUR WORDS:
 	<br>
 	<textarea rows="6" cols="49" name="guesses" autofocus="true"></textarea>
 	<br>
 	<br>
-	<input type="SUBMIT" value="SUBMIT">
+	<input value="SUBMIT" type="SUBMIT">
 	
 	</form>
 </div>
 
 {% endblock %}
+</body></html>

@@ -4,6 +4,8 @@ This work is uploaded in the state I demonstrated it for college, and as such so
 
 I can be reached at http://github.com/shovelware , which is presumably where this code was downloaded. Any questions, comments or other things can be forwarded over there and I'll respond in as timely manner as I can.
 
+This code's close relative is live at  http://c001533.pythonanywhere.com/ , where you can play the game and even place on the leaderboard! The only changes made are to file paths and some other small tweaks to ensure it runs online.
+
 -Shovel
 
 ---

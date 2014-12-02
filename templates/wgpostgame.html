@@ -1,4 +1,5 @@
-{% extends "base.html" %}
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body>{% extends "base.html" %}
 
 {% block the_body %}
 
@@ -14,14 +15,15 @@
 <totalscoreh>TOTAL SCORE: </totalscoreh> <totalscore>{{total_score}}</totalscore>
 <hr>
 
-<form action={{ submit_url }} method="POST">
+<form action="{{" submit_url="" }}="" method="POST">
 
-<textarea rows="1" cols="25" name="name" placeholder = "Please submit a name"></textarea>
+<input rows="1" cols="25" name="name" placeholder="Please submit a name" type="text">
 <br>
 <br>
-<input type="SUBMIT" value="Submit">
+<input value="Submit" type="SUBMIT">
 </form>
 </div>
 
 {% endblock %}
 
+</body></html>

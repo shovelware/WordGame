@@ -1,4 +1,5 @@
-{% extends "base.html" %}
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body>{% extends "base.html" %}
 
 {% block the_body %}
 
@@ -9,8 +10,9 @@
 <pre>{{score_text}}</pre>
 
 <hr>
-<form action={{ pregame_url }}>
-<input type="SUBMIT" value="RETURN" autofocus="true">
+<form action="{{" pregame_url="" }}="">
+<input value="RETURN" autofocus="true" type="SUBMIT">
 </form>
 </div>
 {% endblock %}
+</body></html>

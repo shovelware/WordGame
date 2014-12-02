@@ -1,4 +1,5 @@
-{% extends "base.html" %}
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8"></head><body>{% extends "base.html" %}
 
 {% block the_body %}
 
@@ -7,20 +8,21 @@
 <hr>
 	<ul>
 		<li>You will recieve a source word upon clicking play.
-		<li>You must make 7 words of at least 3 letters from this source word.
-		<li>Guesses are separated by non-alphabet characters. Protip: Use return.
-		<li>Time is a factor in scoring, so try to work quickly.
-		<li>Try to make it to the high scores!
-	</ul>
+		</li><li>You must make 7 words of at least 3 letters from this source word.
+		</li><li>Guesses are separated by non-alphabet characters. Protip: Use return.
+		</li><li>Time is a factor in scoring, so try to work quickly.
+		</li><li>Try to make it to the high scores!
+	</li></ul>
 <hr>
-	<form action={{ score_url }}>
-	<input type="SUBMIT" value="SCORES">
+	<form action="{{" score_url="" }}="">
+	<input value="SCORES" type="SUBMIT">
 	</form>
 	
-	<form action={{ playgame_url }}>
-	<input type="SUBMIT" value="PLAY" autofocus="true">
+	<form action="{{" playgame_url="" }}="">
+	<input value="PLAY" autofocus="true" type="SUBMIT">
 	</form>
 
 </div>
 
 {% endblock %}
+</body></html>

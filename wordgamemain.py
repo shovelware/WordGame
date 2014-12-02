@@ -117,7 +117,7 @@ def test_guesses(source, guesses):
 
                     #test word isn't in dictionary
                     if (check_dict_lists()):
-                        if g not in guesslist:
+                        if g.lower().strip() not in guesslist:
                             errordict[g] = "Not in dictionary."
                             continue
 
@@ -189,7 +189,7 @@ def string_to_list(instring):
         if liststr != "":
             output.append(liststr)
             liststr = ""
-        
+
         return output
 
 """take a list, give it back as a newlined string"""
@@ -200,7 +200,7 @@ def list_to_string(lst):
 
         #remove the trailing newline
         strng = strng[:-1]
-        
+
         return strng
 
 """take a list of lists, return it as a newlined string"""
@@ -211,19 +211,19 @@ def list_list_to_string(lst):
 
         #remove the trailing newline
         strng = strng[:-1]
-        
+
         return strng
 
 """preformat dict as a nice string"""
 def dict_to_string(dct):
     strng = ""
-    
+
     for key in dct.keys():
         strng += str(key)
         strng += " -- "
         strng += str(dct[key])
         strng += "\n"
-        
+
     return strng
 
 """gets a source word randomly from the dictionary"""
@@ -248,12 +248,12 @@ def calc_score(guesses, errordict, source, totaltime):
     scores = {}
 
     wordscorrect, wordsincorrect = sort_guesses(guesses, errordict)
-        
+
     #set up vars
     totalwords = len(wordscorrect) + len(wordsincorrect)
 
     wordtime = totaltime / totalwords
-        
+
     #correct words
     for word in wordscorrect:
         scores[word] = calc_score_word(word, source, scoremult, wordtime)
@@ -261,16 +261,16 @@ def calc_score(guesses, errordict, source, totaltime):
     #incorrect words
     for word in wordsincorrect:
         scores[word] = -calc_score_word(word, source, scoremult, wordtime)
-            
+
     return scores
 
 """adds all the scores in the dictionary"""
 def total_score(scoredict):
     total = 0
-    
+
     for v in scoredict.keys():
         total += scoredict[v]
-        
+
     return total
 
 """breaks guesses into two lists based on errordict"""
@@ -282,7 +282,7 @@ def sort_guesses(guesses, errordict):
         for w in wordsincorrect:
             if w in wordscorrect:
                 wordscorrect.remove(w)
-                
+
         return (wordscorrect, wordsincorrect)
 
 """calculate the score for a single word"""
@@ -300,7 +300,7 @@ def save_score(name, score):
 def get_top_ten():
     #this line is mad but I think I get it
     scorelist = sorted(load_scores(), key = lambda item: item[1], reverse = True)
-    
+
     #set up to skim the top ten
     topscorelist = []
     count = 0
@@ -308,12 +308,12 @@ def get_top_ten():
 
     #make sure there is a top ten
     if len(scorelist) < top:
-    	top = len(scorelist)
+        top = len(scorelist)
 
     #actual skimming
     while count < top:
-    	topscorelist.append(scorelist[count])
-    	count += 1
+        topscorelist.append(scorelist[count])
+        count += 1
     return topscorelist
 
 """loads all scores into a list for sorting"""
@@ -368,13 +368,13 @@ def main():
 
     print("\nShould return dupes")
     print(test_guesses("admission", ["mons", "mons", "mons", "mons", "mons", "mons", "mons"]))
-    
+
     print("\nGuesses list to string")
     print(list_to_string(["sin", "miss", "sins", "maid", "diss", "dim", "dam"]))
-    
+
     print("\nGuesses string to list")
     print(string_to_list("sin miss, sins\n\n\n maid,,,--'; diss dim dam"))
-    
+
     print("\nErrors dict to string")
     print(dict_to_string(test_guesses("admission", ["mons", "sin", "sinus", "admission", "madmissions", "dm", "mad"])))
 
@@ -384,10 +384,11 @@ def main():
     print("\nCalculating Score")
     print(dict_to_string(calc_score(["mons", "sin", "sinus", "admission", "madmissions", "dm", "mad"], test_guesses("admission", ["mons", "sin", "sinus", "admission", "madmissions", "dm", "mad"]), "admission", 30)))
     print(total_score(calc_score(["mons", "sin", "sinus", "admission", "madmissions", "dm", "mad"], test_guesses("admission", ["mons", "sin", "sinus", "admission", "madmissions", "dm", "mad"]), "admission", 30)), "\n")
-    
+
     print(dict_to_string(calc_score(["mons", "sin", "sinus", "admission", "madmissions", "dm", "mad"], test_guesses("admission", ["sin", "miss", "sins", "maid", "diss", "dim", "dam"]), "admission", 30)))
     print(total_score(calc_score(["mons", "sin", "sinus", "admission", "madmissions", "dm", "mad"], test_guesses("admission", ["sin", "miss", "sins", "maid", "diss", "dim", "dam"]), "admission", 30)), "\n")
-    """
+
     print("Should print scores as a list")
     print(load_scores())
     sl = load_scores()
+    """

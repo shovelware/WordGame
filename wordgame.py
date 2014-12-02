@@ -1,6 +1,6 @@
-from flask import Flask, render_template, url_for, request, redirect, flash, session
-import wordgamemain as game
+from flask import Flask, render_template, url_for, request, redirect, session
 from threading import Thread
+import wordgamemain as game
 
 app = Flask(__name__)
 
@@ -21,9 +21,9 @@ def display_playgame():
 	#take a game start timestamp
 	session["time_started"] = game.get_timestamp()
 	return render_template("wgplaygame.html",
-                                source_word = session.get("source_word", "errored"), 
-				submit_url = url_for("submit_guesses"),
-                               )
+                            source_word = session.get("source_word", "errored"),
+				            submit_url = url_for("submit_guesses"),
+                            )
 
 """Postgame page, displays errors and score, takes name"""
 @app.route('/post')
@@ -37,7 +37,7 @@ def display_postgame():
 				submit_url = url_for("submit_name"),
 				words_scored = game.dict_to_string(session.get("words_scored")),
 				total_score = session.get("total_score"),
-							   )
+				)
 
 """Hiscore page, displays scores"""
 @app.route('/scores')
@@ -61,18 +61,20 @@ def display_error():
 def submit_guesses():
         #take in words as string and process them
         session["guesses"] = game.string_to_list(request.form["guesses"])
-        
+
         #check against source, store errors
         session["error_dict"] = game.test_guesses(session.get("source_word"), session.get("guesses"))
-        
+
         #if we have no errors, finish the game
         if session.get("error_dict") == {}: #paul not sure if this test for equality works
             #get a game finish timestamp
             session["time_finished"] = game.get_timestamp()
             #calculate the time taken from timestamps
             session["total_time"] = game.calc_timetaken(session.get("time_started"), session.get("time_finished"))
+            #add a var to ensure you can't double score
+            session["game_complete"] = True
             return redirect(url_for("display_postgame"))
-        
+
         #but if we do, chuck us out
         else:
             return redirect(url_for("display_error"))
@@ -80,24 +82,21 @@ def submit_guesses():
 """Runs when name is submitted, redirects to scores"""
 @app.route('/submitname', methods=["POST"])
 def submit_name():
-    session["name"] = request.form["name"]
+    #disable double scoring
+    if session.get("game_complete") == True:
+        session["name"] = request.form["name"]
+        #Make sure there's a name, any name
+        if session.get("name") == "":
+            session["name"] = "anon"
 
-    #Make sure there's a name, any name
-    if session.get("name") == "":
-        session["name"] = "anon"
-    
-    t = Thread(target = save_score, args = (session.get("name"), session.get("total_score")))
-    t.start()
-    
+        t = Thread(target = save_score, args = (session.get("name"), session.get("total_score")))
+        t.start()
+
+    session["game_complete"] = False
+
     return redirect(url_for("display_scores"))
 
 def save_score(name, score):
     game.save_score(name, score)
 
 app.config["SECRET_KEY"] = "Whocares"
-if __name__ == "__main__":
-    app.run(debug=True)
-
-#######################################################################
-#############################END OF FLASK##############################
-#######################################################################

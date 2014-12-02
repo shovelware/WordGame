@@ -101,7 +101,13 @@ textarea{
 	resize: none;
 }
 
+textbox{
+	background: #000000;
+	color:	#00ff00;
+}
+
 input[type=text] {
+    font-weight: normal;
 	background: #000000;
 	color:	#00ff00;
 	font-size: 115%;
