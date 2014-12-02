@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block the_body %}
+
+<div>
+<h2>RULES</h2>
+<hr>
+	<ul>
+		<li>You will recieve a source word upon clicking play.
+		<li>You must make 7 words of at least 3 letters from this source word.
+		<li>Time is a factor in scoring, so try to work quickly.
+		<li>Guesses are separated by non-alphabet characters. Protip: Use return.
+		<li>Try to make it to the high scores!
+	</ul>
+<hr>
+	<form action={{ score_url }}>
+	<input type="SUBMIT" value="SCORES">
+	</form>
+	
+	<form action={{ playgame_url }}>
+	<input type="SUBMIT" value="PLAY" autofocus="true">
+	</form>
+
+</div>
+
+{% endblock %}

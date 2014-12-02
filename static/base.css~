@@ -1,0 +1,121 @@
+body {
+	font-family:	Verdana, Geneva, Arial, sans-serif;
+	font-size:	medium;
+	color:		#cccccc;
+	background-color: #663399;
+}
+
+h1 {
+	font-weight: 	bold;
+	color:		#ffffff;
+	font-size:	400%;
+}
+
+h2 {
+	font-weight: 	bold;
+	color:		#ffffff;
+	font-size:	200%;
+}
+
+h3 {
+	font-weight: 	bold;
+	color:		#ffffff;
+	font-size:	175%;
+}
+
+h4 {
+	font-weight: 	bold;
+	color:		#ffffff;
+	font-size:	150%;
+}
+
+
+h5 {
+	font-weight: 	bold;
+	color:		#ffffff;
+	font-size:	125%;
+}
+
+sourceword {
+	font-weight: 	bold;
+	color:		#ffffff;
+	font-size:	200%;
+	text-transform: uppercase;
+}
+
+errh{
+	font-weight: 	bold;
+	color:		#ff0000;
+	background-color: #000000;
+	font-size:	125%;
+}
+
+err {
+	color:		#ff0000;
+	background-color: #000000;
+}
+
+scoreh {
+	font-weight: 	bold;
+	color:		#ffffff;
+	font-size:	150%;
+}
+
+score {
+	font-size: 125%;
+}
+
+totalscoreh {
+	font-weight: 	bold;
+	color:		#ffffff;
+	font-size:	150%;
+}
+
+totalscore {
+	font-size: 200%;
+}
+
+a {
+	color:	#ff0000;
+}
+
+p {
+    border-style: solid;
+    border-width: 10%;
+}
+
+div {
+    border-style: solid;
+    border-width: medium;
+}
+
+pre {
+	font-size: 125%;
+}
+
+/*Inputs*/
+
+textarea{
+	background: #000000;
+	color:	#00ff00;
+	resize: none;
+}
+
+input[type=text] {
+	background: #000000;
+	color:	#00ff00;
+	font-size: 115%;
+}
+input[type=submit] {
+	background: #000000;
+	color:	#00ffff;
+	font-size: 200%;
+}
+select {
+	background: #000000;
+	color:	#00ff00;
+	font-size: 125%;
+}
+
+
+

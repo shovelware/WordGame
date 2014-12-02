@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block the_body %}
+
+<div>
+<sourceword>"{{ source_word }}"</sourceword>
+<hr>
+	<form action={{ submit_url }} method="POST">
+	SUBMIT YOUR WORDS:
+	<br>
+	<textarea rows="6" cols="49" name="guesses" autofocus="true"></textarea>
+	<br>
+	<br>
+	<input type="SUBMIT" value="SUBMIT">
+	
+	</form>
+</div>
+
+{% endblock %}
