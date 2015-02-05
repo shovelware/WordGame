@@ -1,30 +1,28 @@
 import time, random
 from string import ascii_letters
+import MyUtils.py as MySQL
 
-p_usrdict = "/usr/share/dict/words"
 p_guessdict = "guessdict.log"
-p_tempsourcedict = "tmpsourcedict.log"
 p_sourcedict = "sourcedict.log"
 p_scores = "scores.log"
 
 sourcelist = list()
 guesslist = list()
 
+config = {'DB_HOST': '127.0.0.1', 'DB_USER': 'WGUser', 'DB_PASSWD': 'WGUPass', 'DB': 'WordGameDB' }
+
 lensource = 7
 lenguess = 3
 numguess = 7
 scoremult = 100
 
-###Dictionaries (No lists mentioned, all from text files)###
-"""Generate dictionaries"""
-def generate_dicts():
-    gen_guess_dict(p_usrdict)
-    gen_tmpsource_dict(p_guessdict)
-    gen_source_dict(p_tempsourcedict)
-    print("Dictionaries generated to file!")
-    load_dicts(p_sourcedict, p_guessdict)
+#Access DB like so:
+#with MySQL.UseDatabase(config) as cursor:
+#    SQL = """[SQL COMMAND %s %s %s]"""
+#    cursor.execute(SQL, [%s1], [%s2], [%s3])
 
-"""Put the dictionaries into lists"""
+###Dictionaries (No lists mentioned, all from text files)###
+"""Put the dictionaries into lists""" ###2.0 SQL
 def load_dicts(sourcefilepath, guessfilepath):
     with open(sourcefilepath, "r") as source:
         for word in source:
@@ -36,57 +34,6 @@ def load_dicts(sourcefilepath, guessfilepath):
 
     #print ("Dictionaries loaded from file!")
 
-"""Generate a file with all the possible guess words"""
-def gen_guess_dict(dictionaryfilepath):
-    ##open the words file
-    with open (dictionaryfilepath) as words:
-        ##open the dictionary
-            with open (pguessdict, "w") as guessdict:
-                for word in words:
-                    word = word.strip()
-
-                    ##if it's not a stupid word
-                    if "'" not in word and "é" not in word and "Å" not in word:
-                        ##if it's more than 3 letters, toss it in
-                        if len(word) >= lenguess:
-                            print (word, file = guessdict)
-
-"""Generate a file with all the long enough source words"""
-def gen_tmpsource_dict(guessdictfilepath):
-    ##if it's more than 7, add it to the temp
-    with open (guessdictfilepath) as guessdict:
-        with open (p_tempsourcedict, "w") as tempdict:
-            for word in guessdict:
-                word = word.strip()
-
-                if len(word) >= lensource:
-                    print (word, file = tempdict)
-
-"""Generate a file with source words that have enough answers"""
-def gen_source_dict(tempdictfilepath):
-    with open (tempdictfilepath) as tempdict:
-        with open (p_sourcedict, "w") as sourcedict:
-                for word in tempdict:
-                        word = word.strip()
-
-                        #check that there are 7 words that make this one in the guess dictionary
-                        if test_source(word):
-                                #print ("Valid source found!")
-                                print(word, file = sourcedict)
-
-"""Checks that a source word has 7 possible answers, returns a bool"""
-def test_source(source):
-    #print (source)
-    count = 0
-    with open (p_guessdict, "r") as guessdict:
-        for word in guessdict:
-            word = word.strip()
-            if word != source:
-                if contains(source, word):
-                    count += 1
-                    #print (word, True)
-                    if count >= numguess: return True
-    return False
 
 ###Testing Words (lists safe from here out)###
 """Test guesses against source, guessdict, no dupes, not source"""
@@ -290,13 +237,16 @@ def calc_score_word(word, source, scoremult, wordtime):
     #(number of letters in word / number in source) multiplied by (reasonable number / time per word)
     return int(round((len(word) / len(source) * scoremult / wordtime), 0))
 
-"""add score to score.log"""
+"""add score to score.log""" ###2.0 SQL
 def save_score(name, score):
+    #Make sure it's short enough by cutting off the end
+    name = name[:16]
+    
     #add score to log file
         with open(p_scores, "a") as scores:
-                print(name.strip() + " - " + str(score), file = scores)
+                print(name + " - " + str(score), file = scores)
 
-"""sorts through the score table, gets the top ten, returns as a list of lists[name, score]"""
+"""sorts through the score table, gets the top ten, returns as a list of lists[name, score]"""###2.0 SQL
 def get_top_ten():
     #this line is mad but I think I get it
     scorelist = sorted(load_scores(), key = lambda item: item[1], reverse = True)
@@ -316,7 +266,7 @@ def get_top_ten():
         count += 1
     return topscorelist
 
-"""loads all scores into a list for sorting"""
+"""loads all scores into a list for sorting"""###2.0 SQL
 def load_scores():
     scorelist = []
     #load the scores into a list of lists as in [[name, score], [name1, score1]]
