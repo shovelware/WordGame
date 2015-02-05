@@ -1,17 +1,29 @@
-p_usrdict = "/usr/share/dict/words"
+p_usrdict = "words.txt"
 p_guessdict = "guessdict.log"
 p_tempsourcedict = "tmpsourcedict.log"
 p_sourcedict = "sourcedict.log"
 
-
 import MyUtils.py as MySQL
 
-config = {'DB_HOST': '127.0.0.1', 'DB_USER': 'WGUser', 'DB_PASSWD': 'WGUPass', 'DB': 'WordGameDB' }
+config = {'DB_HOST': '127.0.0.1', 'DB_USER': 'WGUser', 'DB_PASSWD': 'WGUPass', 'DB': 'wordgame' }
 
 #Access DB like so:
 #with MySQL.UseDatabase(config) as cursor:
 #    SQL = """[SQL COMMAND %s %s %s]"""
 #    cursor.execute(SQL, [%s1], [%s2], [%s3])
+
+###Dictionaries (No lists mentioned, all from text files)###
+"""Put the dictionaries into lists""" ###2.0 SQL
+def load_dicts(sourcefilepath, guessfilepath):
+    with open(sourcefilepath, "r") as source:
+        for word in source:
+            sourcelist.append(word.strip())
+
+    with open(guessfilepath, "r") as guess:
+        for word in guess:
+            guesslist.append(word.strip())
+
+    #print ("Dictionaries loaded from file!")
 
 """Generate dictionaries"""###2.0 REM
 def generate_dicts():

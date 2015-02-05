@@ -9,7 +9,7 @@ p_scores = "scores.log"
 sourcelist = list()
 guesslist = list()
 
-config = {'DB_HOST': '127.0.0.1', 'DB_USER': 'WGUser', 'DB_PASSWD': 'WGUPass', 'DB': 'WordGameDB' }
+config = {'DB_HOST': '127.0.0.1', 'DB_USER': 'WGUser', 'DB_PASSWD': 'WGUPass', 'DB': 'wordgame' }
 
 lensource = 7
 lenguess = 3
