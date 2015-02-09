@@ -9,7 +9,7 @@ This code's close relative is live at  http://c001533.pythonanywhere.com/ , wher
 -Shovel
 
 ---
-Toolset: Python 3.4 (With Flask & Jinja)
+Toolset: Python 3.4 (With Flask & Jinja), MySQL
 Subject: Web & Cloud Development
 
 Portfolio page: http://shovelwaregames.wordpress.com/p/y3/#WG

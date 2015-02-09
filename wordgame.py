@@ -44,7 +44,7 @@ def display_postgame():
 def display_scores():
     return render_template("wgscores.html",
                            pregame_url = url_for("display_pregame"),
-                           score_text = game.list_list_to_string(game.get_top_ten()),
+                           score_text = game.get_top_ten(),
                            )
 
 """Error page, for when the user really messes up"""

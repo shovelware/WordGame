@@ -1,0 +1,43 @@
+###create user and give permissions (as root)
+CREATE USER "wguser" IDENTIFIED BY "wgpass";
+GRANT ALL ON wordgame.* TO "wguser" IDENTIFIED BY "wgpass";
+
+###create both tables
+create table hiscore(
+	hiscore_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	score_amt INT NOT NULL,
+	player_sn varchar(16) NOT NULL
+);
+
+create table dict(
+	dict_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	word_sn VARCHAR(24)
+);
+
+###insert words
+INSERT INTO dict(word_sn) VALUES("word");
+
+###insert score
+INSERT INTO hiscore(player_sn, score_amt) VALUES("name", score);
+
+###check guess is in dictionary (will be empty if not)
+SELECT * from dict where word_sn = "guess";
+
+###get highest id in dictionary
+select max(dict_id) from dict;
+
+##Select random source word?
+SELECT * 
+	FROM dict 
+	WHERE CHAR_LENGTH(word_sn) >= 7 
+ORDER BY RAND() 
+LIMIT 1;
+
+###select top 10 scorers
+SELECT player_sn, score_amt
+    FROM hiscore
+ORDER BY score_amt DESC, hiscore_id ASC
+LIMIT 10;
+
+###NON-SQL but longest word in file
+wc -L filename

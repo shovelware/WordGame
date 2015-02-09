@@ -1,94 +1,12 @@
-import time, random
+import time
 from string import ascii_letters
+import DBI as database
 
-p_usrdict = "/usr/share/dict/words"
-p_guessdict = "guessdict.log"
-p_tempsourcedict = "tmpsourcedict.log"
-p_sourcedict = "sourcedict.log"
-p_scores = "scores.log"
-
-sourcelist = list()
-guesslist = list()
-
-lensource = 7
 lenguess = 3
 numguess = 7
 scoremult = 100
 
-###Dictionaries (No lists mentioned, all from text files)###
-"""Generate dictionaries"""
-def generate_dicts():
-    gen_guess_dict(p_usrdict)
-    gen_tmpsource_dict(p_guessdict)
-    gen_source_dict(p_tempsourcedict)
-    print("Dictionaries generated to file!")
-    load_dicts(p_sourcedict, p_guessdict)
-
-"""Put the dictionaries into lists"""
-def load_dicts(sourcefilepath, guessfilepath):
-    with open(sourcefilepath, "r") as source:
-        for word in source:
-            sourcelist.append(word.strip())
-
-    with open(guessfilepath, "r") as guess:
-        for word in guess:
-            guesslist.append(word.strip())
-
-    #print ("Dictionaries loaded from file!")
-
-"""Generate a file with all the possible guess words"""
-def gen_guess_dict(dictionaryfilepath):
-    ##open the words file
-    with open (dictionaryfilepath) as words:
-        ##open the dictionary
-            with open (pguessdict, "w") as guessdict:
-                for word in words:
-                    word = word.strip()
-
-                    ##if it's not a stupid word
-                    if "'" not in word and "é" not in word and "Å" not in word:
-                        ##if it's more than 3 letters, toss it in
-                        if len(word) >= lenguess:
-                            print (word, file = guessdict)
-
-"""Generate a file with all the long enough source words"""
-def gen_tmpsource_dict(guessdictfilepath):
-    ##if it's more than 7, add it to the temp
-    with open (guessdictfilepath) as guessdict:
-        with open (p_tempsourcedict, "w") as tempdict:
-            for word in guessdict:
-                word = word.strip()
-
-                if len(word) >= lensource:
-                    print (word, file = tempdict)
-
-"""Generate a file with source words that have enough answers"""
-def gen_source_dict(tempdictfilepath):
-    with open (tempdictfilepath) as tempdict:
-        with open (p_sourcedict, "w") as sourcedict:
-                for word in tempdict:
-                        word = word.strip()
-
-                        #check that there are 7 words that make this one in the guess dictionary
-                        if test_source(word):
-                                #print ("Valid source found!")
-                                print(word, file = sourcedict)
-
-"""Checks that a source word has 7 possible answers, returns a bool"""
-def test_source(source):
-    #print (source)
-    count = 0
-    with open (p_guessdict, "r") as guessdict:
-        for word in guessdict:
-            word = word.strip()
-            if word != source:
-                if contains(source, word):
-                    count += 1
-                    #print (word, True)
-                    if count >= numguess: return True
-    return False
-
-###Testing Words (lists safe from here out)###
+###Testing Words###          
 """Test guesses against source, guessdict, no dupes, not source"""
 def test_guesses(source, guesses):
     errordict = {}
@@ -115,9 +33,8 @@ def test_guesses(source, guesses):
                         errordict[g] = "Too many characters."
                         continue
 
-                    #test word isn't in dictionary
-                    if (check_dict_lists()):
-                        if g.lower().strip() not in guesslist:
+                    #test word isn't in dictionary ##2.0 SQL
+                    if database.check_guess(g.lower().strip()) != True:
                             errordict[g] = "Not in dictionary."
                             continue
 
@@ -161,15 +78,6 @@ def letter_count(word):
     return letters
 
 ###Game Functions###
-"""makes sure dictionaries are loaded into lists"""
-def check_dict_lists():
-    #if they're empty, load them
-    if len(sourcelist) == 0 or len(guesslist) == 0:
-        load_dicts(p_sourcedict, p_guessdict)
-        return True
-    #otherwise everything is fine
-    return True
-
 """take a string, make them into a list delimited by non-ascii characters"""
 def string_to_list(instring):
         output = []
@@ -226,11 +134,9 @@ def dict_to_string(dct):
 
     return strng
 
-"""gets a source word randomly from the dictionary"""
+"""gets a source word randomly from the dictionary""" ##2.0 SQL
 def get_source():
-    #make sure the dictionary is there first
-    if (check_dict_lists()):
-        return sourcelist[random.randint(0, len(sourcelist))]
+    return database.random_source()
 
 """gets a timestamp for the current time"""
 def get_timestamp():
@@ -292,48 +198,15 @@ def calc_score_word(word, source, scoremult, wordtime):
 
 """add score to score.log"""
 def save_score(name, score):
-    #add score to log file
-        with open(p_scores, "a") as scores:
-                print(name.strip() + " - " + str(score), file = scores)
+    database.insert_score(name, score)
 
-"""sorts through the score table, gets the top ten, returns as a list of lists[name, score]"""
+"""sorts through the score table, gets the top ten, returns as a list of lists[name, score]"""###2.0 SQL
 def get_top_ten():
-    #this line is mad but I think I get it
-    scorelist = sorted(load_scores(), key = lambda item: item[1], reverse = True)
-
-    #set up to skim the top ten
-    topscorelist = []
-    count = 0
-    top = 10
-
-    #make sure there is a top ten
-    if len(scorelist) < top:
-        top = len(scorelist)
-
-    #actual skimming
-    while count < top:
-        topscorelist.append(scorelist[count])
-        count += 1
-    return topscorelist
-
-"""loads all scores into a list for sorting"""
-def load_scores():
-    scorelist = []
-    #load the scores into a list of lists as in [[name, score], [name1, score1]]
-    ###MAKE SCORE INTO A NUMBER###
-    with open(p_scores, "r") as scores:
-        scorelist = []
-        line = scores.read().splitlines()
-        for item in line:
-            if item != "":
-                name, score = item.split("-")
-                scorelist.append([str(name).strip(), int(score)])
-    return scorelist
+    return database.top_ten_str()
 
 ###MAIN FUNCTION###
 def main():
 #testing!
-
     """
     print(test_guesses("errored", ["err", "red", "reed", "deer", "roe", "redo", "erred"]))
 
@@ -350,9 +223,6 @@ def main():
     print (contains("admission", "dismiss"))
     print (contains("admission", "missing"))
     print (contains("admission", "soon"))
-
-    print("\nTest Source, should be true.")
-    print(test_source("admission"))
 
     print("\nShould return empty, that's how it's supposed to do. You made no mistakes!")
     print(test_guesses("admission", ["sin", "miss", "sins", "maid", "diss", "dim", "dam"]))
@@ -389,6 +259,5 @@ def main():
     print(total_score(calc_score(["mons", "sin", "sinus", "admission", "madmissions", "dm", "mad"], test_guesses("admission", ["sin", "miss", "sins", "maid", "diss", "dim", "dam"]), "admission", 30)), "\n")
 
     print("Should print scores as a list")
-    print(load_scores())
-    sl = load_scores()
-    """
+    print(get_top_ten())
+    """    
