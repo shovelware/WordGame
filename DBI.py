@@ -14,7 +14,6 @@ lensource = 7
 lenguess = 3
 numguess = 7
 
-
 config = {'DB_HOST': '127.0.0.1', 'DB_USER': 'wguser', 'DB_PASSWD': 'wgpass', 'DB': 'wordgame' }
 
 #Access DB like so:
@@ -77,6 +76,7 @@ def gen_tmpsource_dict(guessdictfilepath):
                     wordcount += 1
                     if wordcount % 1000 == 0:
                         print("\t ", wordcount)
+                        
     print("Temp source done")
 
 """Generate a file with source words that have enough answers"""
@@ -94,6 +94,7 @@ def gen_source_dict(tempdictfilepath):
                                 wordcount += 1
                                 if wordcount % 1000 == 0:
                                     print("\t ", wordcount)
+                                    
     print("Source done")
 
 """Checks that a source word has 7 possible answers, returns a bool"""
@@ -217,6 +218,11 @@ def hiscore_to_db():
                 cursor.execute("""INSERT INTO hiscore(player_sn, score_amt) VALUES(%s, %s);""", (item[0], item[1]))
     print("Scores inserted into database!")
 
+"""adds a new hiscore to the db"""
+def insert_hiscore(name, score):
+    with MySQL.UseDatabase(config) as cursor:
+        cursor.execute("""INSERT INTO hiscore(player_sn, score_amt) VALUES(%s, %s);""", (str(name), int(score)))
+
 """pull top ten scores from database"""
 def get_top_ten():
     with MySQL.UseDatabase(config) as cursor:
@@ -233,7 +239,6 @@ def top_ten_str():
     strng = strng[:-1]
 
     return strng
-
     
 ###GENERATION FUNCTIONS: CAUTION###
 def full_gen(key):
@@ -259,6 +264,26 @@ def half_gen(key):
     create_db_hiscore()
     hiscore_to_db()
 
+def half_gen_dict(key):
+    #Protect from accidentally wiping and regenning db
+    if (key != 5):
+        print("ERROR INVALID KEY")
+        return
+    #Actual meat
+    create_db_dict()
+    dict_to_db()
+    
+def half_gen_hiscore(key):
+    #Protect from accidentally wiping and regenning db
+    if (key != 10):
+        print("ERROR INVALID KEY")
+        return
+    #Actual meat
+    create_db_hiscore()
+    hiscore_to_db()
+    
+###Main info###
+"""
 print("###NOTE###")
 print("Assumes the following: \n\twordgame db exists.\n\twguser identified by wgupass exists.\n\tAll rights on wordgame granted to wguser")
 
@@ -274,9 +299,13 @@ print("check_guess(guess) - check if a guess is in the dictionary")
 print("\n###SCORE###")
 print("create_db_hiscore - create empty hiscore database. (drops current db)")
 print("hiscore_to_db - add the scores from the lists to the wordgame db")
+print("insert_hiscore(name, score) - add a new score to the wordgame db")
 print("top_ten - query top ten from db")
 print("top_ten_str - preformat top ten as string")
 
 print("\n###DATABASE###")
 print("full_gen(key) - run a complete regeneration of all files")
 print("half_gen(key) - run generation from .log to db (assume both exist)")
+print("half_gen_dict(key) - run dict generation from .log to db (assume both exist)")
+print("half_gen_hiscore(key) - run score generation from .log to db (assume both exist)")
+"""
