@@ -136,7 +136,7 @@ def dict_to_string(dct):
 
 """gets a source word randomly from the dictionary""" ##2.0 SQL
 def get_source():
-    return database.random_source()
+    return database.get_random_source()
 
 """gets a timestamp for the current time"""
 def get_timestamp():
@@ -198,11 +198,11 @@ def calc_score_word(word, source, scoremult, wordtime):
 
 """add score to score.log"""
 def save_score(name, score):
-    database.insert_score(name, score)
+    database.insert_hiscore(name, score)
 
 """sorts through the score table, gets the top ten, returns as a list of lists[name, score]"""###2.0 SQL
 def get_top_ten():
-    return database.top_ten_str()
+    return database.get_top_ten_str()
 
 ###MAIN FUNCTION###
 def main():

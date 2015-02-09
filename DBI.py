@@ -177,7 +177,7 @@ def check_guess(guess):
         else: return True
         
 """selects a random source word from the database"""
-def random_source():
+def get_random_source():
     with MySQL.UseDatabase(config) as cursor:
         cursor.execute("""SELECT word_sn FROM dict WHERE CHAR_LENGTH(word_sn) >= 7 ORDER BY RAND() LIMIT 1;""")
         return cursor.fetchall()[0][0]
@@ -230,7 +230,7 @@ def get_top_ten():
         return cursor.fetchall();
 
 """preformat top ten as string"""
-def top_ten_str():
+def get_top_ten_str():
     strng = ""
     for i in get_top_ten():
         strng += str(i[0]) + " - " + str(i[1]) + "\n"
@@ -283,29 +283,30 @@ def half_gen_hiscore(key):
     hiscore_to_db()
     
 ###Main info###
-"""
-print("###NOTE###")
-print("Assumes the following: \n\twordgame db exists.\n\twguser identified by wgupass exists.\n\tAll rights on wordgame granted to wguser")
+def helpme():
+    print("###NOTE###")
+    print("Assumes the following: \n\twordgame db exists.\n\twguser identified by wgupass exists.\n\tAll rights on wordgame granted to wguser")
 
-print("\n###WORD###")
-print("gen_dicts - generate dictionary.log files from words.txt")
-print("create_db_dict - create empty dict database. (drops current db)")
-print("dict_to_db - add the words from the list to the wordgame db")
+    print("\n###WORD###")
+    print("generate_dicts - generate dictionary.log files from words.txt")
+    print("create_db_dict - create empty dict database. (drops current db)")
+    print("dict_to_db - add the words from the list to the wordgame db")
 
-print("\n###GAME###")
-print("get_source - get a random source word")
-print("check_guess(guess) - check if a guess is in the dictionary")
+    print("\n###GAME###")
+    print("get_random_source - get a random source word")
+    print("check_guess(guess) - check if a guess is in the dictionary")
 
-print("\n###SCORE###")
-print("create_db_hiscore - create empty hiscore database. (drops current db)")
-print("hiscore_to_db - add the scores from the lists to the wordgame db")
-print("insert_hiscore(name, score) - add a new score to the wordgame db")
-print("top_ten - query top ten from db")
-print("top_ten_str - preformat top ten as string")
+    print("\n###SCORE###")
+    print("create_db_hiscore - create empty hiscore database. (drops current db)")
+    print("hiscore_to_db - add the scores from the lists to the wordgame db")
+    print("insert_hiscore(name, score) - add a new score to the wordgame db")
+    print("get_top_ten - query top ten from db")
+    print("get_top_ten_str - preformat top ten as string")
 
-print("\n###DATABASE###")
-print("full_gen(key) - run a complete regeneration of all files")
-print("half_gen(key) - run generation from .log to db (assume both exist)")
-print("half_gen_dict(key) - run dict generation from .log to db (assume both exist)")
-print("half_gen_hiscore(key) - run score generation from .log to db (assume both exist)")
-"""
+    print("\n###DATABASE###")
+    print("full_gen(key) - run a complete regeneration of all files")
+    print("half_gen(key) - run generation from .log to db (assume both exist)")
+    print("half_gen_dict(key) - run dict generation from .log to db (assume both exist)")
+    print("half_gen_hiscore(key) - run score generation from .log to db (assume both exist)")
+
+print("helpme() for MySQL interface help")

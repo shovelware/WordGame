@@ -6,16 +6,16 @@
 <div>
 <h2>SCORING</h2>
 <hr>
-<scoreh>TIME: </scoreh> <score>{{total_time}} SECONDS</score>
+<scoreh>TIME: </scoreh> <score>{{ total_time }} SECONDS</score>
 <hr>
 <scoreh>WORD SCORES:</scoreh>
-	<pre>{{words_scored}}</pre>
+	<pre>{{ words_scored }}</pre>
 
 <hr>
 <totalscoreh>TOTAL SCORE: </totalscoreh> <totalscore>{{total_score}}</totalscore>
 <hr>
 
-<form action="{{" submit_url="" }}="" method="POST">
+<form action="{{ submit_url }}" method="POST">
 
 <input rows="1" cols="25" name="name" placeholder="Please submit a name" type="text">
 <br>

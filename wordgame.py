@@ -100,3 +100,4 @@ def save_score(name, score):
     game.save_score(name, score)
 
 app.config["SECRET_KEY"] = "Whocares"
+app.run(debug = True)
