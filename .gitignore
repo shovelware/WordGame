@@ -1,1 +1,5 @@
+# Python generated files
 __pycache__/
+
+# Lock files for things open
+*.*~
