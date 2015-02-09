@@ -1,6 +1,6 @@
 import time, random
 from string import ascii_letters
-import MyUtils.py as MySQL
+import MyUtils as MySQL
 
 p_guessdict = "guessdict.log"
 p_sourcedict = "sourcedict.log"
@@ -9,7 +9,7 @@ p_scores = "scores.log"
 sourcelist = list()
 guesslist = list()
 
-config = {'DB_HOST': '127.0.0.1', 'DB_USER': 'WGUser', 'DB_PASSWD': 'WGUPass', 'DB': 'wordgame' }
+config = {'DB_HOST': '127.0.0.1', 'DB_USER': 'wguser', 'DB_PASSWD': 'wgpass', 'DB': 'wordgame' }
 
 lensource = 7
 lenguess = 3
@@ -19,7 +19,7 @@ scoremult = 100
 #Access DB like so:
 #with MySQL.UseDatabase(config) as cursor:
 #    SQL = """[SQL COMMAND %s %s %s]"""
-#    cursor.execute(SQL, [%s1], [%s2], [%s3])
+#    cursor.execute(SQL, ([%s1], [%s2], [%s3]))
 
 ###Dictionaries (No lists mentioned, all from text files)###
 """Put the dictionaries into lists""" ###2.0 SQL
@@ -35,7 +35,7 @@ def load_dicts(sourcefilepath, guessfilepath):
     #print ("Dictionaries loaded from file!")
 
 
-###Testing Words (lists safe from here out)###
+###Testing Words (lists safe from here out)###          
 """Test guesses against source, guessdict, no dupes, not source"""
 def test_guesses(source, guesses):
     errordict = {}
@@ -62,7 +62,7 @@ def test_guesses(source, guesses):
                         errordict[g] = "Too many characters."
                         continue
 
-                    #test word isn't in dictionary
+                    #test word isn't in dictionary ##2.0 SQL
                     if (check_dict_lists()):
                         if g.lower().strip() not in guesslist:
                             errordict[g] = "Not in dictionary."
@@ -108,7 +108,7 @@ def letter_count(word):
     return letters
 
 ###Game Functions###
-"""makes sure dictionaries are loaded into lists"""
+"""makes sure dictionaries are loaded into lists""" ##2.0 REM
 def check_dict_lists():
     #if they're empty, load them
     if len(sourcelist) == 0 or len(guesslist) == 0:
@@ -173,7 +173,7 @@ def dict_to_string(dct):
 
     return strng
 
-"""gets a source word randomly from the dictionary"""
+"""gets a source word randomly from the dictionary""" ##2.0 SQL
 def get_source():
     #make sure the dictionary is there first
     if (check_dict_lists()):
