@@ -150,7 +150,7 @@ def check_dict_lists():
 """regenerates an empty table dict"""
 def create_db_dict():
     with MySQL.UseDatabase(config) as cursor:
-        cursor.execute("""drop if exists table dict;""")
+        cursor.execute("""drop table if exists dict;""")
         cursor.execute("""create table dict(dict_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, word_sn VARCHAR(24));""")
         print("Table dict created!")
 
@@ -206,7 +206,7 @@ def check_score_list():
 """regenerates an empty table hiscore"""
 def create_db_hiscore():
     with MySQL.UseDatabase(config) as cursor:
-        cursor.execute("""drop if exists table hiscore;""")
+        cursor.execute("""drop table if exists hiscore;""")
         cursor.execute("""create table hiscore(hiscore_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, score_amt INT NOT NULL, player_sn varchar(16) NOT NULL);""")
     print("Table hiscore created!")
 
@@ -246,7 +246,6 @@ def full_gen(key):
     if (key != 42):
         print("ERROR INVALID KEY")
         return
-
     #Actual meat
     generate_dicts()
     half_gen(21)
@@ -289,7 +288,7 @@ def helpme():
 
     print("\n###WORD###")
     print("generate_dicts - generate dictionary.log files from words.txt")
-    print("create_db_dict - create empty dict database. (drops current db)")
+    print("create_db_dict - create empty dict database. (drops current db if exists)")
     print("dict_to_db - add the words from the list to the wordgame db")
 
     print("\n###GAME###")
@@ -297,16 +296,16 @@ def helpme():
     print("check_guess(guess) - check if a guess is in the dictionary")
 
     print("\n###SCORE###")
-    print("create_db_hiscore - create empty hiscore database. (drops current db)")
+    print("create_db_hiscore - create empty hiscore database. (drops current db if exists)")
     print("hiscore_to_db - add the scores from the lists to the wordgame db")
     print("insert_hiscore(name, score) - add a new score to the wordgame db")
     print("get_top_ten - query top ten from db")
     print("get_top_ten_str - preformat top ten as string")
 
-    print("\n###DATABASE###")
+    print("\n###DATABASE### (Keys in source for safety)")
     print("full_gen(key) - run a complete regeneration of all files")
     print("half_gen(key) - run generation from .log to db (assume both exist)")
-    print("half_gen_dict(key) - run dict generation from .log to db (assume both exist)")
-    print("half_gen_hiscore(key) - run score generation from .log to db (assume both exist)")
+    print("half_gen_dict(key) - run dict generation from .log")
+    print("half_gen_hiscore(key) - run score generation from .log")
 
-print("helpme() for MySQL interface help")
+print("helpme() for MySQL interface help.")

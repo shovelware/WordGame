@@ -1,15 +1,16 @@
 ###create user and give permissions (as root)
 CREATE USER "wguser" IDENTIFIED BY "wgpass";
+CREATE DATABASE "wordgame";
 GRANT ALL ON wordgame.* TO "wguser" IDENTIFIED BY "wgpass";
 
 ###create both tables
-create table hiscore(
+CREATE TABLE hiscore(
 	hiscore_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	score_amt INT NOT NULL,
 	player_sn varchar(16) NOT NULL
 );
 
-create table dict(
+CREATE TABLE dict(
 	dict_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	word_sn VARCHAR(24)
 );
