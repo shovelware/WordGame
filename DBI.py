@@ -147,12 +147,12 @@ def check_dict_lists():
     return True
 
 ###Database interaction for dictionaries###
-"""regenerates an empty database dict"""
+"""regenerates an empty table dict"""
 def create_db_dict():
     with MySQL.UseDatabase(config) as cursor:
-        cursor.execute("""drop table dict;""")
+        cursor.execute("""drop if exists table dict;""")
         cursor.execute("""create table dict(dict_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, word_sn VARCHAR(24));""")
-        print("Database dict created!")
+        print("Table dict created!")
 
 
 """Pulls word from guessdict(inherently includes sources) and inserts them"""
@@ -203,12 +203,12 @@ def check_score_list():
     return True
 
 ###Database interaction for hiscores###
-"""regenerates an empty database hiscore"""
+"""regenerates an empty table hiscore"""
 def create_db_hiscore():
     with MySQL.UseDatabase(config) as cursor:
-        cursor.execute("""drop table hiscore;""")
+        cursor.execute("""drop if exists table hiscore;""")
         cursor.execute("""create table hiscore(hiscore_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT, score_amt INT NOT NULL, player_sn varchar(16) NOT NULL);""")
-    print("Database hiscore created!")
+    print("Table hiscore created!")
 
 """inserts all scores into dict from list"""
 def hiscore_to_db():
